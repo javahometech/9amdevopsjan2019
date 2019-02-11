@@ -1,0 +1,33 @@
+---
+- hosts: all
+  become: True
+  tasks:
+    - name: Install tomcat
+      yum:
+        name: tomcat
+        state: present
+    - name: Install Git
+      yum:
+        name: git
+        state: present
+    - name: Start tomcat
+      service:
+        name: tomcat
+        state: started
+    - name: Enable tomcat on reboot
+      service:
+        name: tomcat
+        enabled: yes
+    - name: create directory under tomcat webapps
+      file:
+        path: /usr/share/tomcat/webapps/ROOT
+        state: directory 
+    - name: Take website from git and deploy 
+      git:
+        repo: https://github.com/javahometech/javahome-app 
+        dest: /usr/share/tomcat/webapps/ROOT/
+    - name: Update port number of tomcat
+      lineinfile:
+        path: /usr/share/tomcat/conf/server.xml
+        regexp: '^<Connector port="8080" protocol="HTTP/1.1"$'
+        line: '<Connector port="2019" protocol="HTTP/1.1"'
