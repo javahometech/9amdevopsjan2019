@@ -27,7 +27,13 @@
         repo: https://github.com/javahometech/javahome-app 
         dest: /usr/share/tomcat/webapps/ROOT/
     - name: Update port number of tomcat
-      lineinfile:
-        path: /usr/share/tomcat/conf/server.xml
-        regexp: '^<Connector port="8080" protocol="HTTP/1.1"$'
-        line: '<Connector port="2019" protocol="HTTP/1.1"'
+      template:
+        src: server.xml.j2
+        dest: /usr/share/tomcat/conf/server.xml
+      notify:
+        - Restart tomcat
+  handlers:  
+    - name: Restart tomcat
+      service:
+        name: tomcat
+        state: restarted
