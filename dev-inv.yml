@@ -1,18 +1,10 @@
 [webservers]
 172.31.25.207 
-172.31.25.207 
-172.31.25.207 
+172.31.17.127
+172.31.17.127
 
-[databases]
-172.31.25.207
-172.31.25.207
-172.31.25.207
-
-[webdb:children]
-webservers
-databases
-
-#[webdb:vars]
+[loadbalancer]
+172.31.25.50
 [all:vars]
 ansible_user=ec2-user
 ansible_connection=ssh
